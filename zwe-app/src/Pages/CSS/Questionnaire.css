@@ -1,0 +1,156 @@
+.questionnaire-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffdde1 0%, #ffe6f0 45%, #ffcce0 100%);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.hearts-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: -10%;
+  font-size: 1.6rem;
+  opacity: 0.8;
+  animation-name: float-up;
+  animation-timing-function: ease-in;
+  animation-iteration-count: infinite;
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-110vh) rotate(20deg);
+    opacity: 0;
+  }
+}
+
+.q-card {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  border-radius: 28px;
+  padding: 48px 40px;
+  max-width: 460px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(255, 105, 145, 0.35);
+  animation: pop-in 0.5s ease-out;
+}
+
+@keyframes pop-in {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.big-emoji {
+  font-size: 3.2rem;
+  margin-bottom: 8px;
+}
+
+.q-card h1 {
+  color: #d6336c;
+  font-size: 1.8rem;
+  margin: 0 0 8px;
+}
+
+.subtitle {
+  color: #a85a72;
+  margin: 0 0 32px;
+  font-size: 1rem;
+}
+
+.btn-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+  min-height: 80px;
+}
+
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.2s ease;
+}
+
+.btn-yes {
+  background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(255, 107, 157, 0.45);
+}
+
+.btn-yes:hover {
+  filter: brightness(1.05);
+}
+
+.btn-no {
+  background: #f1f1f1;
+  color: #666;
+  position: relative;
+  transition: transform 0.15s ease-out;
+}
+
+.q-card.celebrate {
+  animation: celebrate-pop 0.6s ease-out;
+}
+
+@keyframes celebrate-pop {
+  0% {
+    transform: scale(0.7) rotate(-4deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05) rotate(2deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.celebrate h1 {
+  color: #d6336c;
+}
+
+.celebrate p {
+  color: #a85a72;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 480px) {
+  .q-card {
+    padding: 36px 24px;
+  }
+
+  .btn-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
