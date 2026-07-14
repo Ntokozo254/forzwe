@@ -117,6 +117,32 @@
   transition: transform 0.15s ease-out;
 }
 
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.btn-option {
+  background: #fff0f4;
+  color: #d6336c;
+  border: 2px solid #ffd3e0;
+  padding: 14px 12px;
+  font-size: 1rem;
+}
+
+.btn-option:hover {
+  background: #ff6b9d;
+  border-color: #ff6b9d;
+  color: #fff;
+}
+
+@media (max-width: 480px) {
+  .option-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .q-card.celebrate {
   animation: celebrate-pop 0.6s ease-out;
 }

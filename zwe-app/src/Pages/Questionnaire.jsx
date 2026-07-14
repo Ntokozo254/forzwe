@@ -14,10 +14,56 @@ const NO_MESSAGES = [
   "This is your final answer?",
 ]
 
+const RESTAURANT_OPTIONS = [
+  '🍝 Italian Bistro',
+  '🍣 Sushi Bar',
+  '🥩 Steakhouse',
+  '☕ Cozy Cafe',
+  '🌮 Taco Spot',
+]
+
+const FOOD_OPTIONS = [
+  '🍔 Burger',
+  '🍕 Pizza',
+  '🍣 Sushi',
+  '🍝 Pasta',
+  '🥗 Salad',
+  '🌮 Tacos',
+]
+
+const MAX_HEARTS = 18
+const HEART_POOL = Array.from({ length: MAX_HEARTS }).map(() => ({
+  left: Math.random() * 100,
+  animationDelay: Math.random() * 5,
+  animationDuration: 4 + Math.random() * 4,
+}))
+
+function HeartsBg({ count }) {
+  return (
+    <div className="hearts-bg" aria-hidden="true">
+      {HEART_POOL.slice(0, count).map((heart, i) => (
+        <span
+          key={i}
+          className="floating-heart"
+          style={{
+            left: `${heart.left}%`,
+            animationDelay: `${heart.animationDelay}s`,
+            animationDuration: `${heart.animationDuration}s`,
+          }}
+        >
+          💗
+        </span>
+      ))}
+    </div>
+  )
+}
+
 function Questionnaire() {
-  const [accepted, setAccepted] = useState(false)
+  const [step, setStep] = useState('ask')
   const [noCount, setNoCount] = useState(0)
   const [noPos, setNoPos] = useState({ top: 0, left: 0 })
+  const [restaurant, setRestaurant] = useState(null)
+  const [food, setFood] = useState(null)
 
   const yesScale = 1 + noCount * 0.15
   const noScale = Math.max(1 - noCount * 0.08, 0.4)
@@ -32,28 +78,74 @@ function Questionnaire() {
     setNoCount((c) => c + 1)
   }
 
-  if (accepted) {
+  if (step === 'done') {
     return (
       <div className="questionnaire-page">
-        <div className="hearts-bg" aria-hidden="true">
-          {Array.from({ length: 18 }).map((_, i) => (
-            <span
-              key={i}
-              className="floating-heart"
-              style={{
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${4 + Math.random() * 4}s`,
-              }}
-            >
-              💕
-            </span>
-          ))}
-        </div>
+        <HeartsBg count={18} />
         <div className="q-card celebrate">
           <div className="big-emoji">🥳💖</div>
-          <h1>Yay! She said yes!</h1>
-          <p>I knew you'd say yes 🥰 I love you so much!</p>
+          <h1>It's a date!</h1>
+          <p>
+            {restaurant} for some {food.toLowerCase()} 🥰 Can't wait!
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  if (step === 'food') {
+    return (
+      <div className="questionnaire-page">
+        <HeartsBg count={12} />
+        <div className="q-card">
+          <div className="big-emoji">🍽️</div>
+          <h1>What should we eat?</h1>
+          <p className="subtitle">Pick something yummy</p>
+
+          <div className="option-grid">
+            {FOOD_OPTIONS.map((option) => (
+              <button
+                key={option}
+                type="button"
+                className="btn btn-option"
+                onClick={() => {
+                  setFood(option)
+                  setStep('done')
+                }}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (step === 'restaurant') {
+    return (
+      <div className="questionnaire-page">
+        <HeartsBg count={12} />
+        <div className="q-card">
+          <div className="big-emoji">📍</div>
+          <h1>Where should we go?</h1>
+          <p className="subtitle">Pick a spot for our date</p>
+
+          <div className="option-grid">
+            {RESTAURANT_OPTIONS.map((option) => (
+              <button
+                key={option}
+                type="button"
+                className="btn btn-option"
+                onClick={() => {
+                  setRestaurant(option)
+                  setStep('food')
+                }}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     )
@@ -61,25 +153,11 @@ function Questionnaire() {
 
   return (
     <div className="questionnaire-page">
-      <div className="hearts-bg" aria-hidden="true">
-        {Array.from({ length: 12 }).map((_, i) => (
-          <span
-            key={i}
-            className="floating-heart"
-            style={{
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${4 + Math.random() * 4}s`,
-            }}
-          >
-            💗
-          </span>
-        ))}
-      </div>
+      <HeartsBg count={12} />
 
       <div className="q-card">
         <div className="big-emoji">🐻💌</div>
-        <h1>Will you be my girlfriend?</h1>
+        <h1>Will you go on a date with me?</h1>
         <p className="subtitle">Choose wisely...</p>
 
         <div className="btn-row">
@@ -87,7 +165,7 @@ function Questionnaire() {
             type="button"
             className="btn btn-yes"
             style={{ transform: `scale(${yesScale})` }}
-            onClick={() => setAccepted(true)}
+            onClick={() => setStep('restaurant')}
           >
             Yes 💖
           </button>
